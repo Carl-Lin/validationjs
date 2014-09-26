@@ -14,44 +14,42 @@ var FormValidation = (function(window, document, my){
 
 ///now only can input form class, will add input form id. in put for id like #xxx.
 	my.init = function( formClass, requireList){
-			var l=requireList.length,
-				element = document.getElementsByClassName( formClass ),
-				elementLength = element.length,
-				warningArr = [];
+			var l = requireList.length,
+					element = document.getElementsByClassName( formClass ),
+					elementLength = element.length,
+					elementCounting;
 
-			var warningLength,   ///variables for set warning span
-				warningContent = '',
-				warningTemp = '';
+			var warningArr = [],///variables for set warning span
+					warningLength,
+					warningContent = '',
+					warningTemp = '';
 
-			for( var i=0; i<elementLength; i++ ){
-				[].forEach.call(element[i].querySelectorAll('input'), function(e){
+			///iterate all form named Formclass
+			for( var elementCounting=0; elementCounting<elementLength; elementCounting++ ){
+				///iterate all input in form
+				[].forEach.call(element[elementCounting].querySelectorAll('input'), function(e){
+					for( var i=0; i<l; i++ ){
 					///add validation-require class to empty input.
-					for( i=0; i<l; i++ ){
 						if( e.name === requireList[i] ){
 							if( e.value==='' ){
-								e.classList.add('validation-require');
-								warningArr.push( e.name );
+								e.classList.add('validation-required');
+								warningTemp = '<span class="validation-warning">'+ e.name + ' is required' +'</span>';
+								warningContent = warningContent + warningTemp;
 							}
 						}
 					}
-					///
-					if( warningArr.length !== 0 ){
-						var warningLength = warningArr.length,
-							warningContent = '',
-							warningTemp;
-
-						warningDiv = document.createElement( 'div' );
-						for( i=0; i<warningLength; i++ ){
-							warningTemp = '<span class="validation-warning">'+ warningArr[i]  + 'is required' +'</span>';
-							warningContent = warningContent + warningTemp;
-						}
+					///append  span with 'xxx is required'
+					if(warningContent !== ''){
+						var warningDiv = document.createElement('div');
 						warningDiv.innerHTML = warningContent;
-						// console.log( element );
-						element.insertBefore( warningDiv, element.firstChild );
+						element[elementCounting].insertBefore( warningDiv, element[elementCounting].childNodes[2] )
+						warningContent = '';
 					}
 				});
-			}	
+			}
 	}
 
 	return my;
 }(window, document, FormValidation||{}));
+
+
