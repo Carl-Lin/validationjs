@@ -1,0 +1,15 @@
+
+/*css style for the div which contains warning span*/
+.required-warning{
+
+}
+
+/*css style for warning span*/
+.validation-warning{
+	color: red;
+}
+
+/*add color to input field border*/
+.validation-required{
+	border-color: red;
+}

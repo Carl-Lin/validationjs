@@ -10,10 +10,17 @@ if(typeof module === 'object'){
 var FormValidation = (function(window, document, my){
 	var recoverForm = function(){
 		///recover all we do at init
+		var warning = document.getElementById('required-warning');
+		warning.parentNode.removeChild(warning);
+
+		[].forEach.call(document.getElementsByClassName('validation-required'), function(e){
+			e.classList.remove('validation-required');
+		})
+
 	};
 
 ///now only can input form class, will add input form id. in put for id like #xxx.
-	my.submit = function( formClass, requireList){
+	my.onsubmit = function( formClass, requireList){
 			var l = requireList.length,
 					element = document.getElementsByClassName( formClass ),
 					elementLength = element.length,
