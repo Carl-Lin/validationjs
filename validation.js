@@ -8,16 +8,17 @@ if(typeof module === 'object'){
 }
 
 var FormValidation = (function(window, document, my){
-	var end = function(){
+	var recoverForm = function(){
 		///recover all we do at init
 	};
 
 ///now only can input form class, will add input form id. in put for id like #xxx.
-	my.init = function( formClass, requireList){
+	my.submit = function( formClass, requireList){
 			var l = requireList.length,
 					element = document.getElementsByClassName( formClass ),
 					elementLength = element.length,
-					elementCounting;
+					elementCounting,
+					flag = true;
 
 			var warningArr = [],///variables for set warning span
 					warningLength,
@@ -32,6 +33,7 @@ var FormValidation = (function(window, document, my){
 					///add validation-require class to empty input.
 						if( e.name === requireList[i] ){
 							if( e.value==='' ){
+								flag = flag?false:false;
 								e.classList.add('validation-required');
 								warningTemp = '<span class="validation-warning">'+ e.name + ' is required' +'</span>';
 								warningContent = warningContent + warningTemp;
@@ -41,12 +43,14 @@ var FormValidation = (function(window, document, my){
 					///append  span with 'xxx is required'
 					if(warningContent !== ''){
 						var warningDiv = document.createElement('div');
+						warningDiv.id = 'required-warning';
 						warningDiv.innerHTML = warningContent;
 						element[elementCounting].insertBefore( warningDiv, element[elementCounting].childNodes[2] )
 						warningContent = '';
 					}
 				});
 			}
+			return flag;// for stop submit
 	}
 
 	return my;
