@@ -1,7 +1,7 @@
 /*========================================================================================================== 
 Author: Carl  Lin
 Time: Sep, 2014
-Description:   
+Description:
  	Since jquery.validation is suck!!!!  Decide to rewrite one
 ===========================================================================================================*/
 if(typeof module === 'object'){
@@ -25,7 +25,13 @@ var FormValidation = (function(window, document, my){
 description: check if required field is empty & if retype is the same
 not yet finish: Now only can input form class, will add input form id. in put for id like #xxx.
 */
-	my.onsubmit = function( formClass, requireList, repeatList){
+
+// formClass, requireList, repeatList
+	my.onsubmit = function( initJson ){
+			var formClass = initJson.formClass,
+				requireList = initJson.requireList,
+				repeatList = initJson.repeatList?initJson.repeatList:[];
+
 			var l = requireList.length,
 					i,
 					element = document.getElementsByClassName( formClass ),
@@ -33,10 +39,8 @@ not yet finish: Now only can input form class, will add input form id. in put fo
 					elementCounting,
 					flag = true;
 
-			// var repeatTemp1 = '', ///variable for check repeat;
-			// 	repeatTemp2 = '',
-			// 	repeatLength = 0,
-			// 	repeatDefault = false;
+			var repeatContentArr = [], ///variable for check repeat;
+					repeatLength = repeatList.length,
 
 			var warningArr = [],///variables for set warning span
 					warningLength,
@@ -53,8 +57,16 @@ not yet finish: Now only can input form class, will add input form id. in put fo
 							if( e.value==='' ){
 								flag = flag?false:false;
 								e.classList.add('validation-required');
-								warningTemp = '<span class="validation-warning">'+ e.name + ' is required' +'</span>';
+								warningTemp = '<div class="validation-warning">'+ e.name + ' is required' +'</div>';
 								warningContent = warningContent + warningTemp;
+							}
+						}
+					}
+					///if there have been askd for check two field to be the same
+					if(repeatLength!==0){
+						for(i=0; i<repeatLength; i++){
+							if(e.name === repeatList[i] && e.value !== ''){
+								repeatContentArr.push(e.value);
 							}
 						}
 					}
@@ -70,8 +82,7 @@ not yet finish: Now only can input form class, will add input form id. in put fo
 				}
 			}
 			return flag;// for stop submit
-	}
-
+	};
 	return my;
 }(window, document, FormValidation||{}));
 
