@@ -3,6 +3,8 @@ Author: Carl  Lin
 Time: Sep, 2014
 Description:
  	Since jquery.validation is suck!!!!  Decide to rewrite one
+
+ 	onsubmit need to get a json- { formClass: '',  requireList: '',  repeatList: '' };
 ===========================================================================================================*/
 if(typeof module === 'object'){
 	module.export = FormValidation;
@@ -22,7 +24,7 @@ var FormValidation = (function(window, document, my){
 	};
 
 /*
-description: check if required field is empty & if retype is the same
+description: check if required field is empty & if retype is the same. But the part of retype is not finish yet. 
 not yet finish: Now only can input form class, will add input form id. in put for id like #xxx.
 */
 
@@ -40,7 +42,7 @@ not yet finish: Now only can input form class, will add input form id. in put fo
 					flag = true;
 
 			var repeatContentArr = [], ///variable for check repeat;
-					repeatLength = repeatList.length,
+					repeatLength = repeatList.length;
 
 			var warningArr = [],///variables for set warning span
 					warningLength,
@@ -49,13 +51,13 @@ not yet finish: Now only can input form class, will add input form id. in put fo
 
 			///iterate all form named Formclass
 			for( var elementCounting=0; elementCounting<elementLength; elementCounting++ ){
-				///iterate all input in form
+				///iterate all input fueld in form
 				[].forEach.call(element[elementCounting].querySelectorAll('input'), function(e){
 					for( i=0; i<l; i++ ){
 					///add validation-require class to empty input.
 						if( e.name === requireList[i] ){
 							if( e.value==='' ){
-								flag = flag?false:false;
+								flag = false;
 								e.classList.add('validation-required');
 								warningTemp = '<div class="validation-warning">'+ e.name + ' is required' +'</div>';
 								warningContent = warningContent + warningTemp;
@@ -80,6 +82,11 @@ not yet finish: Now only can input form class, will add input form id. in put fo
 					element[elementCounting].insertBefore( warningDiv, element[elementCounting].childNodes[2] )
 					warningContent = '';
 				}
+				// else if( repeatContentArr.length !== 0 ){
+				// 	for(i=0; i<repeatList.length; i++){
+				// 		if()
+				// 	}
+				// }
 			}
 			return flag;// for stop submit
 	};
